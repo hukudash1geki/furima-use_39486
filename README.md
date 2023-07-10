@@ -32,30 +32,29 @@
 
 ### Association
 - belongs_to :user
-- belongs_to :purchase
+- has_one :purchase
 
 ## purchases テーブル
 
 | id(PK) | integer | null: false |
 | user (FK) | references | null: false, foreign_key: true |
 | item (FK) | references | null: false, foreign_key: true |
-| delivery (FK) | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :user
 - has_one :items
-- has_one :delivery
+- belongs_to :delivery
 
 ## deliverys テーブル
 
 | id(PK) | integer | null: false |
 | purchase(FK) | references | null: false, foreign_key: true |
-| postai_code | integer | null: false |
+| postal_code | string | null: false |
 | prefectures_id | integer | null: false |
-| cities_and_towns | integer | null: false |
-| house_number | integer | null: false |
-| building name | integer |
-| telephone_number | integer | null: false |
+| cities_and_towns | string | null: false |
+| house_number | string | null: false |
+| building name | string |
+| telephone_number | string | null: false |
 
 ### Association
 - belongs_to :delivery

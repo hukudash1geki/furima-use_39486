@@ -42,10 +42,10 @@
 
 ### Association
 - belongs_to :user
-- has_one :items
-- belongs_to :delivery
+- belongs_to :item
+- has_one :delivery
 
-## deliverys テーブル
+## deliveries テーブル
 
 | id(PK) | integer | null: false |
 | purchase(FK) | references | null: false, foreign_key: true |
@@ -53,9 +53,9 @@
 | prefectures_id | integer | null: false |
 | cities_and_towns | string | null: false |
 | house_number | string | null: false |
-| building name | string |
+| building_name | string |
 | telephone_number | string | null: false |
 
 ### Association
-- belongs_to :delivery
+- belongs_to :purchase
 

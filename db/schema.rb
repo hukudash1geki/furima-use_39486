@@ -70,7 +70,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_133135) do
   create_table "purchases", charset: "utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "item_id", null: false
-    t.text "token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_purchases_on_item_id"

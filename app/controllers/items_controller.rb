@@ -2,7 +2,7 @@ class ItemsController < ApplicationController
   before_action :select_item, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :redirect_to_show, only: [:edit, :update, :destroy]
-
+  before_action :redirect_to_index, only: [:edit]
   def index
     @items = Item.all.order(created_at: :desc)
   end
@@ -13,33 +13,28 @@ class ItemsController < ApplicationController
 
   def create
     @item = Item.new(item_params)
-    if @item.save
-      return redirect_to root_path
-    else
-      render 'new', status: :unprocessable_entity
-    end
+    return redirect_to root_path if @item.save
+
+    render 'new', status: :unprocessable_entity
   end
 
   def show
+
   end
 
   def edit
   end
 
   def update
-    if @item.update(item_params)
-      return redirect_to item_path(@item)
-    else
-      render 'edit', status: :unprocessable_entity
-    end
+    return redirect_to item_path(@item) if @item.update(item_params)
+
+    render 'edit', status: :unprocessable_entity
   end
 
   def destroy
-    if @item.destroy
-      return redirect_to root_path
-    else
-      render 'show', status: :unprocessable_entity
-    end
+    return redirect_to root_path if @item.destroy
+
+    render 'show', status: :unprocessable_entity
   end
 
   private
@@ -64,5 +59,10 @@ class ItemsController < ApplicationController
 
   def redirect_to_show
     return redirect_to root_path if current_user.id != @item.user.id
+  end
+
+  def redirect_to_index
+    return unless @item.purchase.present?
+    redirect_to '/'
   end
 end

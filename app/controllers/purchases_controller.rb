@@ -1,19 +1,19 @@
 class PurchasesController < ApplicationController
   before_action :set_public_key, only: [:index, :create]
+  before_action :move_to_log_in
+  before_action :move_to_index
+  before_action :move_to_top
   def index
-    @item = Item.find(params[:item_id])
     @purchase_deliverie = PurchaseDeliverie.new
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @purchase_deliverie = PurchaseDeliverie.new(purchase_params)
     if @purchase_deliverie.valid?
       pay_item
        @purchase_deliverie.save
        redirect_to root_path
     else
-      @item = Item.find(params[:item_id])
       render :index, status: :unprocessable_entity
     end
   end
@@ -23,6 +23,29 @@ class PurchasesController < ApplicationController
   def purchase_params
     params.require(:purchase_deliverie).permit(:postal_code, :prefecture_id, :cities_and_towns, :house_number, :building_name, :telephone_number, :token).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
   end
+
+  def move_to_log_in
+    unless user_signed_in?
+      redirect_to user_session_path
+    end
+  end
+
+  def move_to_index
+    @item = Item.find(params[:item_id])
+    @purchase = Purchase.all
+    if @item.purchase.present?
+      redirect_to '/'
+    end
+  end
+
+  def move_to_top
+    @item = Item.find(params[:item_id])
+    if current_user.id == @item.user_id 
+      redirect_to '/'
+    end
+  end
+
+  
 
   def pay_item
     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
@@ -36,6 +59,8 @@ class PurchasesController < ApplicationController
   def set_public_key
     gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
   end
+
+
 
 end
 

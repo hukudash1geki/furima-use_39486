@@ -1,4 +1,5 @@
-<%= include_gon %>
+ <%= include_gon %>
+
 
 <%= render "shared/second-header"%>
 
@@ -32,7 +33,6 @@
         </p>
       </div>
     <%# //支払額の表示 %>
-
 
 
     <%= form_with model: [@item, @purchase_deliverie], url:item_purchases_path , id: 'charge-form', class: 'transaction-form-wrap',local: true do |f| %>

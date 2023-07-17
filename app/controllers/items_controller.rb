@@ -5,7 +5,6 @@ class ItemsController < ApplicationController
   before_action :redirect_to_index, only: [:edit]
   def index
     @items = Item.all.order(created_at: :desc)
-    @purchase = Purchase.all
   end
 
   def new
@@ -63,9 +62,7 @@ class ItemsController < ApplicationController
   end
 
   def redirect_to_index
-    @purchase = Purchase.all
     return unless @item.purchase.present?
-
     redirect_to '/'
   end
 end

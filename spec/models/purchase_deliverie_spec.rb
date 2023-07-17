@@ -54,10 +54,15 @@ RSpec.describe PurchaseDeliverie, type: :model do
         @purchase_deliverie.valid?
         expect(@purchase_deliverie.errors.full_messages).to include("Telephone number can't be blank")
       end
-      it 'telephone_numberが11文字以下なら保存できないこと' do
-        @purchase_deliverie.telephone_number = '1234567'
+      it 'telephone_numberが9文字以下なら保存できないこと' do
+        @purchase_deliverie.telephone_number = '123456789'
         @purchase_deliverie.valid?
         expect(@purchase_deliverie.errors.full_messages).to include('Telephone number is too short')
+      end
+      it 'telephone_numberが12文字以上なら保存できないこと' do
+        @purchase_deliverie.telephone_number = '1234567890123'
+        @purchase_deliverie.valid?
+        expect(@purchase_deliverie.errors.full_messages).to include('Telephone number is too long (maximum is 11 characters)')
       end
       it 'telephone_numberが数字のみでないと保存できないこと' do
         @purchase_deliverie.telephone_number = '123-4567-89'
